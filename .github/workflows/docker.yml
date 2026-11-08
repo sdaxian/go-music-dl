@@ -51,6 +51,7 @@ jobs:
           context: .
           platforms: linux/arm/v7
           push: false
+          outputs: type=docker,dest=${{ runner.temp }}/music-dl-armv7.tar
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
