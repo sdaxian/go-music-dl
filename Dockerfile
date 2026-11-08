@@ -4,6 +4,7 @@ FROM --platform=$BUILDPLATFORM golang:1.25 AS builder
 WORKDIR /app
 ARG TARGETOS=linux
 ARG TARGETARCH
+ARG TARGETVARIANT
 
 COPY go.mod go.sum ./
 RUN go mod download
