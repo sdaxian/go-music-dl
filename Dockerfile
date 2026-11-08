@@ -9,8 +9,15 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=${TARGETARCH:-$(go env GOARCH)} go build -o music-dl ./cmd/music-dl
+# RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=${TARGETARCH:-$(go env GOARCH)} go build -o music-dl ./cmd/music-dl
+# arm/v7 时 TARGETVARIANT=v7，去掉 v 变成 GOARM=7
+RUN CGO_ENABLED=0 \
+    GOOS=$TARGETOS \
+    GOARCH=$TARGETARCH \
+    GOARM=$(echo "$TARGETVARIANT" | sed 's/^v//') \
+    go build -trimpath -ldflags "-s -w" -o music-dl ./cmd/music-dl
 
+    
 # Runtime stage
 FROM alpine:3.22
 
